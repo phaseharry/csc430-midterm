@@ -1,6 +1,8 @@
 const express = require('express');
-
 const app = express();
+const { connectToDb } = require('../db/connection');
+
+connectToDb(app);
 
 const apiRouter = require('./routes');
 
