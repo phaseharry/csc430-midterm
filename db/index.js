@@ -11,7 +11,7 @@ const Section = require('./models/Section');
 
 const connectToDb = async (expressApp) => {
   try {
-    await conn.sync({ force: true });
+    await conn.sync();
     expressApp.emit('ready');
     console.log('connected to database');
   } catch (err) {
