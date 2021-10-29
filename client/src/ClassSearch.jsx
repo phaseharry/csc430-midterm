@@ -24,7 +24,7 @@ function ClassSearch(props){
     }
    return (
     <>
-<body>
+
     <h2>Class Search</h2>
     <h4>Select a Subject, Course Number, and Course Attribute</h4>
        <label /*style={{alignTextLeft}*/ for="subject">Subject</label>
@@ -38,7 +38,6 @@ function ClassSearch(props){
            console.log(subj)
            return <span>{subj.name}</span>
        })}
-</body>
     </>
    )
 }
