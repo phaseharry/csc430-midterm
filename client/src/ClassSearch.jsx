@@ -9,7 +9,7 @@ function ClassSearch(props){
 
     useEffect(() => {
         async function onStartup(){
-            const response = await axios.get('localhost:8080/api/subject/')
+            const response = await axios.get('http://localhost:8080/api/subject/')
             const data = response.data;
             setSubjects(data)
         }
