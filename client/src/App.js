@@ -1,7 +1,6 @@
 import './App.css';
 import ClassSearch from './ClassSearch';
 
-
 function App() {
   return (
     <div className="App">
