@@ -56,12 +56,12 @@ const seed = async () => {
         subjectId: biology.id
       }),
       Course.create({
-        name: 'Calculus I',
+        name: 'Micro Biology',
         code: 'BIO 201',
         subjectId: biology.id
       }),
       Course.create({
-        name: 'Calculus II',
+        name: 'Ecosystem',
         code: 'BIO 202',
         subjectId: biology.id
       })
