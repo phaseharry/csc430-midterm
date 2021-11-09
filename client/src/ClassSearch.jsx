@@ -2,9 +2,8 @@ import React,{useState, useEffect} from 'react';
 import axios from 'axios';
 import './index.css';
 import { Button, Pane, Text, majorScale, Select, option } from 'evergreen-ui'
-//import e from 'cors';
+
 function ClassSearch(props){
-    const [subject,setSubject] = useState('')
     const [courseNumber, setCourseNumber] = useState('')
     const [courseAttribute,setCourseAttribute] = useState('')
     const [selectedSubject, setSelectedSubject] = useState(null)
