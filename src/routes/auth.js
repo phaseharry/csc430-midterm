@@ -9,7 +9,8 @@ const Admin = require('../../db/models/Admin');
  * @description logins a user info and gets their role information
  * @access Students, Professors, Advisors
  */
-Router.get('/login', async (req, res, next) => {
+Router.post('/login', async (req, res, next) => {
+  console.log(req.body)
   const { email, password } = req.body;
   if (!email || !password) {
     const bodyError = new Error('Missing email, password, or both!');
@@ -25,7 +26,7 @@ Router.get('/login', async (req, res, next) => {
   });
   if (!user) {
     const userNotExistError = new Error('User not found or invalid password!');
-    bodyError.status = 404;
+    userNotExistError.status = 404;
     next(userNotExistError);
     return;
   }

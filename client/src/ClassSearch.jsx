@@ -32,13 +32,13 @@ function ClassSearch(props){
     <h4>Select a Subject, Course Number, and Course Attribute</h4>
        <label for="subject">Subject</label>
         <SelectMenu 
-            options={subjects.map(subj => ({ label: subj.name, value: subj.id }))}    
+            options={subjects && subjects.map(subj => ({ label: subj.name, value: subj.id }))}    
             selected={selectedSubject}
             hasFilter={false}
             hasTitle={false}
             onSelect={(item) => setSelectedSubject(item.value)}
         >
-            <Button width="150px">{(selectedSubject) && subjects.find(s => s.id === selectedSubject).name || 'Select Subject'}</Button>
+            <Button width="150px">{(selectedSubject) && subjects && subjects.find(s => s.id === selectedSubject).name || 'Select Subject'}</Button>
         </SelectMenu>
        <label for="courseNumber">Course Number</label>
        <input id ='courseNumber'onChange={(e) => setCourseNumber(e.target.value)} value={courseNumber}></input> 

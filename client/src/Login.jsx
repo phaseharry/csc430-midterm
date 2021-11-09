@@ -16,7 +16,7 @@ function Login(props){
       const success = await login(email, password);
       if(success) navigate('/');
     } catch (e) {
-      setError(e);
+      setError(e.message);
       console.error(e);
     }
   }
@@ -42,7 +42,7 @@ function Login(props){
         <Button onClick={attemptLogin}>
           Login
         </Button>
-        {error && <InlineAlert intent="danger">{error}</InlineAlert>}
+        {error && <InlineAlert marginTop="20px" intent="danger">{error}</InlineAlert>}
       </div>
     </>
   )

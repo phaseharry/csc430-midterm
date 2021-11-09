@@ -24,6 +24,7 @@ module.exports = {
   connectToDb,
   models: {
     Subject,
-    Course
+    Course,
+    Section
   }
 }
