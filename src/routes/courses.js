@@ -2,6 +2,7 @@ const Router = require('express').Router();
 const Course = require('../../db/models/Course');
 const Section = require('../../db/models/Section');
 const Subject = require('../../db/models/Subject');
+const authenticateToken = require('../middleware/authenticateToken');
 
 /**
  * @route GET api/subject/
@@ -22,7 +23,7 @@ Router.get('/', async (req, res, next) => {
  * @description gets all courses for certain subject
  * @access Students, Professors, Advisors
  */
-Router.get('/:subjectId/courses/', async (req, res, next) => {
+Router.get('/:subjectId/courses/', authenticateToken, async (req, res, next) => {
   const { subjectId } = req.params;
   try {
     const subject = await Subject.findOne({
@@ -50,7 +51,7 @@ Router.get('/:subjectId/courses/', async (req, res, next) => {
  * @description gets courses that matches the filter
  * @access Students, Professors, Advisors
  */
-Router.get('/search?', (req, res, next) => {
+Router.get('/search?', authenticateToken, (req, res, next) => {
   const { name } = req.query;
   try {
     return Course.findAll({
@@ -68,7 +69,7 @@ Router.get('/search?', (req, res, next) => {
  * @description gets courses that matches the filter
  * @access Advisors
  */
-Router.put('/:subjectId/courses/:courseId', async (req, res, next) => {
+Router.put('/:subjectId/courses/:courseId', authenticateToken, async (req, res, next) => {
   const { courseId, subjectId } = req.params;
   const payload = req.body;
   try {
@@ -89,7 +90,7 @@ Router.put('/:subjectId/courses/:courseId', async (req, res, next) => {
  * @description gets all sections for a specific course
  * @access Students, Professors, Advisors
  */
-Router.get('/:subjectId/courses/:courseId/sections', async (req, res, next) => {
+Router.get('/:subjectId/courses/:courseId/sections', authenticateToken, async (req, res, next) => {
   const { courseId } = req.params;
   try {
     const sections = await Section.findAll({
@@ -108,7 +109,7 @@ Router.get('/:subjectId/courses/:courseId/sections', async (req, res, next) => {
  * @description updates to a section
  * @access Students, Professors, Advisors
  */
-Router.put('/:courseId/sections/:sectionId', (req, res, next) => {
+Router.put('/:courseId/sections/:sectionId', authenticateToken, (req, res, next) => {
   const { courseId, sectionId } = req.params;
 })
 

@@ -1,7 +1,10 @@
+const bcrypt = require('bcrypt');
 const conn = require('./connection');
 const Subject = require('./models/Subject');
 const Course = require('./models/Course');
 const Section = require('./models/Section');
+const User = require('./models/User');
+const Student = require('./models/Student');
 
 const seed = async () => {
   try {
@@ -114,6 +117,21 @@ const seed = async () => {
         availableSeats: 30
       }),
     ]);
+    const hashedPassword = await bcrypt.hash('12345', 10);
+    const [harry] = await Promise.all([
+      User.create({
+        email: 'harry@gmail.com',
+        password: hashedPassword,
+        firstName: 'Harry',
+        lastName: 'Chen',
+        role: 'student'
+      })
+    ])
+    const [studentHarry] = await Promise.all([
+      Student.create({
+        userId: harry.id,
+      })
+    ])
     console.log('Seed successfully ran!');
     process.exit(0);
   } catch (e) {
