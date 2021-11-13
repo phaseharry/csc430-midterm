@@ -1,16 +1,18 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Router = require('express').Router();
 const User = require('../../db/models/User');
 const Student = require('../../db/models/Student');
 const Professor = require('../../db/models/Professor');
 const Admin = require('../../db/models/Admin');
+const authenticateToken = require('../middleware/authenticateToken');
 
 /**
- * @route POST api/auth/login
+ * @route POST api/user/auth/login
  * @description logins a user info and gets their role information
  * @access Students, Professors, Advisors
  */
-Router.post('/login', async (req, res, next) => {
+Router.post('/auth/login', async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     const bodyError = new Error('Missing email, password, or both!');
@@ -31,14 +33,29 @@ Router.post('/login', async (req, res, next) => {
     next(userNotExistError);
     return;
   }
+  const jwtUserInfo = { userId: user.id };
+  const accessToken = jwt.sign(jwtUserInfo, process.env.ACCESS_TOKEN_SECRET);
+  res.json({ accessToken });
+})
+
+/**
+ * @route POST api/user/info
+ * @description Gets a user's role information
+ * @access Students, Professors, Advisors
+ */
+Router.get('/info', authenticateToken, async (req, res, next) => {
+  const user = req.user;
+  const resUserObj = {
+    ...user.dataValues
+  }
   if (user.role === 'student') {
     const studentInfo = await Student.findOne({
       where: {
         userId: user.id
       }
     });
-    user.info = {
-      ...studentInfo
+    resUserObj.info = {
+      ...studentInfo.dataValues
     };
   } else if (user.role === 'professor') {
     const professorInfo = await Professor.findOne({
@@ -46,8 +63,8 @@ Router.post('/login', async (req, res, next) => {
         userId: user.id
       }
     });
-    user.info = {
-      ...professorInfo
+    resUserObj.info = {
+      ...professorInfo.dataValues
     };
   } else if (user.role === 'admin') {
     const adminInfo = await Admin.findOne({
@@ -55,12 +72,12 @@ Router.post('/login', async (req, res, next) => {
         userId: user.id
       }
     });
-    user.info = {
-      ...adminInfo
+    resUserObj.info = {
+      ...adminInfo.dataValues
     };
   }
-  res.json(user).status(200);
+  delete resUserObj.password;
+  res.json(resUserObj).status(200);
 })
-
 
 module.exports = Router;

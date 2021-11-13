@@ -1,4 +1,4 @@
-import React,{ useContext, useState } from 'react';
+import React,{ useContext, useEffect, useState } from 'react';
 import { TextInputField, Button, InlineAlert } from 'evergreen-ui'
 import { AuthContext } from './contexts/AuthProvider';
 import { useNavigate } from "react-router-dom";
@@ -7,8 +7,14 @@ function Login(props){
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { login, authenticated } = useContext(AuthContext);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if(authenticated) {
+      navigate('/');
+    }
+  }, [authenticated, navigate])
 
   const attemptLogin = async () => {
     try {

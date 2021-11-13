@@ -7,8 +7,13 @@ import './App.css';
 
 function App() {
   const navigate = useNavigate();
-  const { authenticated } = useContext(AuthContext);
- 
+  const { authenticated, checkIfAuthenticated } = useContext(AuthContext);
+  
+  useEffect(() => {
+    checkIfAuthenticated();
+    // eslint-disable-next-line
+  }, []) 
+
   useEffect(() => {
     if(!authenticated) {
       navigate('/login');
