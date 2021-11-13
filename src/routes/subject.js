@@ -1,4 +1,5 @@
 const Router = require('express').Router();
+const { Op } = require("sequelize");
 const Course = require('../../db/models/Course');
 const Section = require('../../db/models/Section');
 const Subject = require('../../db/models/Subject');
@@ -9,7 +10,7 @@ const authenticateToken = require('../middleware/authenticateToken');
  * @description gets a list of all subjects
  * @access Students, Professors, Advisors
  */
-Router.get('/', async (req, res, next) => {
+Router.get('/', authenticateToken, async (req, res, next) => {
   try {
     const subjects = await Subject.findAll();
     res.json(subjects).status(200);
@@ -47,17 +48,27 @@ Router.get('/:subjectId/courses/', authenticateToken, async (req, res, next) => 
 })
 
 /**
- * @route GET api/courses/search?name=""
+ * @route GET api/courses/search?courseName=?&courseNumber=?&subjectId=?""
  * @description gets courses that matches the filter
  * @access Students, Professors, Advisors
  */
 Router.get('/search?', authenticateToken, (req, res, next) => {
-  const { name } = req.query;
+  const { courseName, courseNumber, subjectId } = req.query;
+  const query = {};
+  if (courseName) query.name = courseName;
+  if (courseCode) {
+    query.code = {
+      [Op.or]: {
+        [Op.lt]: courseNumber,
+        [Op.eq]: courseNumber
+      }
+    }
+  }
+  if (subjectId) query.subjectId = subjectId
+  console.log(query)
   try {
     return Course.findAll({
-      where: {
-        name
-      }
+      where: query
     })
   } catch (e) {
     next(e);
