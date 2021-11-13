@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const Router = require('express').Router();
 const User = require('../../db/models/User');
 const Student = require('../../db/models/Student');
@@ -10,7 +11,6 @@ const Admin = require('../../db/models/Admin');
  * @access Students, Professors, Advisors
  */
 Router.post('/login', async (req, res, next) => {
-  console.log(req.body)
   const { email, password } = req.body;
   if (!email || !password) {
     const bodyError = new Error('Missing email, password, or both!');
@@ -18,13 +18,14 @@ Router.post('/login', async (req, res, next) => {
     next(bodyError);
     return;
   }
+
   const user = await User.findOne({
     where: {
-      email,
-      password
+      email
     }
   });
-  if (!user) {
+  if (!user || !(await bcrypt.compare(password, user.password))
+  ) {
     const userNotExistError = new Error('User not found or invalid password!');
     userNotExistError.status = 404;
     next(userNotExistError);

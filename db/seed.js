@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const conn = require('./connection');
 const Subject = require('./models/Subject');
 const Course = require('./models/Course');
@@ -116,10 +117,11 @@ const seed = async () => {
         availableSeats: 30
       }),
     ]);
+    const hashedPassword = await bcrypt.hash('12345', 10);
     const [harry] = await Promise.all([
       User.create({
         email: 'harry@gmail.com',
-        password: '12345',
+        password: hashedPassword,
         firstName: 'Harry',
         lastName: 'Chen',
         role: 'student'
