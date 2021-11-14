@@ -1,9 +1,11 @@
 const Router = require('express').Router();
 
-const coursesRouter = require('./courses');
+const subjectRouter = require('./subject');
 const userRouter = require('./user');
+const searchRouter = require('./search');
 
-Router.use('/subject', coursesRouter);
+Router.use('/search', searchRouter);
+Router.use('/subject', subjectRouter);
 Router.use('/user', userRouter);
 
 module.exports = Router;

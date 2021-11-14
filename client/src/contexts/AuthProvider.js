@@ -5,6 +5,7 @@ export const AuthContext = React.createContext({
   authenticated: false,
   login: async () => {},
   checkIfAuthenticated: async () => {},
+  getAuthToken: () => {},
   userInfo: null,
 })
 
@@ -58,12 +59,17 @@ export const AuthProvider = ({ children }) => {
     setAuthenticated(false);
   }, [setAuthenticated, setUserInfo])
 
+  const getAuthToken = () => {
+    return localStorage.getItem('token');
+  }
+
   return <AuthContext.Provider 
     value={{
       authenticated,
       checkIfAuthenticated,
       userInfo,
-      login
+      login,
+      getAuthToken
     }}
   >
     {children}
