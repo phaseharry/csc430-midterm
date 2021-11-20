@@ -16,13 +16,14 @@ Router.get('/courses?', authenticateToken, async (req, res, next) => {
   if (courseName) query.name = courseName;
   if (courseNumber) query.code = courseNumber;
   if (subjectId) query.subjectId = subjectId;
-  console.log(query)
   try {
     const courses = await Course.findAll({
-      where: query
+      where: query,
+      include: Section
     });
     res.json(courses).status(200);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 })

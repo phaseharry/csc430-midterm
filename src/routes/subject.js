@@ -48,39 +48,11 @@ Router.get('/:subjectId/courses/', authenticateToken, async (req, res, next) => 
 })
 
 /**
- * @route GET api/courses/search?courseName=?&courseNumber=?&subjectId=?""
- * @description gets courses that matches the filter
- * @access Students, Professors, Advisors
- */
-Router.get('/search?', authenticateToken, (req, res, next) => {
-  const { courseName, courseNumber, subjectId } = req.query;
-  const query = {};
-  if (courseName) query.name = courseName;
-  if (courseCode) {
-    query.code = {
-      [Op.or]: {
-        [Op.lt]: courseNumber,
-        [Op.eq]: courseNumber
-      }
-    }
-  }
-  if (subjectId) query.subjectId = subjectId
-  console.log(query)
-  try {
-    return Course.findAll({
-      where: query
-    })
-  } catch (e) {
-    next(e);
-  }
-})
-
-/**
  * @route PUT api/subject/:subjectId/courses/:courseId
  * @description gets courses that matches the filter
  * @access Advisors
  */
-Router.put('/:subjectId/courses/:courseId', authenticateToken, async (req, res, next) => {
+Router.post('/:subjectId/courses/:courseId', authenticateToken, async (req, res, next) => {
   const { courseId, subjectId } = req.params;
   const payload = req.body;
   try {

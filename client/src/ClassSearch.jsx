@@ -1,7 +1,8 @@
 import React,{ useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 import './index.css';
-import { SelectMenu, Button, TextInputField } from 'evergreen-ui';
+import { SelectMenu, Button, TextInputField, Pane } from 'evergreen-ui';
 import { AuthContext } from './contexts/AuthProvider';
 
 function ClassSearch(props){
@@ -54,10 +55,35 @@ function ClassSearch(props){
     {
         searchActive ?
         <>
-        <Button>
+        <Button onClick={() => {
+            setCourses(null);
+            setSearchActive(false);
+        }}>
             Back
         </Button>
-        <div>Search Is Active</div>
+        <Pane>
+            {courses && courses.map(c => {
+                return (
+                <Pane display="flex" flexDirection="column" border="0.1rem solid white" marginTop="0.9rem">
+                    <span>{c.code} - {c.name}</span>
+                    {c.Sections ? <>
+                        {c.Sections.length === 0 ? 'There are no sections available for this course'
+                        : c.Sections.map(s => {
+                            return (
+                                <Link to={`${c.id}/section/${s.id}`}>
+                                    <Pane display="flex" flexDirection="column" fontSize="1rem" border="0.1rem solid white">
+                                        <span>Section Code: {s.sectionCode}</span>
+                                        <span>Available Seats: {s.availableSeats}</span>
+                                    </Pane>
+                                </Link>
+                            )
+                        })
+                        }
+                     </> : null
+                }
+                </Pane>)
+            })}
+        </Pane>
         </>:
        <>
         <h4>Select a Subject, Course Number, and Course Attribute</h4>
