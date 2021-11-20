@@ -3,11 +3,11 @@ const Subject = require('./models/Subject');
 const Course = require('./models/Course');
 const Section = require('./models/Section');
 
-// Subject.hasMany(Course, { as: 'courses' });
-// Course.belongsTo(Subject, { foreignKey: 'id' });
+Subject.hasMany(Course);
+Course.belongsTo(Subject, { foreignKey: 'id' });
 
-// Course.hasMany(Section, { as: 'sections' });
-// Section.belongsTo(Course, { foreignKey: 'courseId' });
+Course.hasMany(Section);
+Section.belongsTo(Course, { foreignKey: 'id' });
 
 const connectToDb = async (expressApp) => {
   try {
