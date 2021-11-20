@@ -5,6 +5,8 @@ const Course = require('./models/Course');
 const Section = require('./models/Section');
 const User = require('./models/User');
 const Student = require('./models/Student');
+const Professor = require('./models/Professor');
+const Admin = require('./models/Admin');
 
 const seed = async () => {
   try {
@@ -117,19 +119,43 @@ const seed = async () => {
         availableSeats: 30
       }),
     ]);
-    const hashedPassword = await bcrypt.hash('12345', 10);
-    const [harry] = await Promise.all([
+    const hashedPasswords = await Promise.all([bcrypt.hash('12345', 10), bcrypt.hash('12345', 10), bcrypt.hash('12345', 10)]);
+    const [harry, ahmad, amena] = await Promise.all([
       User.create({
         email: 'harry@gmail.com',
-        password: hashedPassword,
+        password: hashedPasswords[0],
         firstName: 'Harry',
         lastName: 'Chen',
         role: 'student'
-      })
+      }),
+      User.create({
+        email: 'ahmad@gmail.com',
+        password: hashedPasswords[1],
+        firstName: 'Ahmad',
+        lastName: 'Hamoudeh',
+        role: 'professor'
+      }),
+      User.create({
+        email: 'amena@gmail.com',
+        password: hashedPasswords[2],
+        firstName: 'Amena',
+        lastName: 'Foshanji',
+        role: 'admin'
+      }),
     ])
     const [studentHarry] = await Promise.all([
       Student.create({
         userId: harry.id,
+      })
+    ])
+    const [professorAhmad] = await Promise.all([
+      Professor.create({
+        userId: ahmad.id
+      })
+    ])
+    const [adminAmena] = await Promise.all([
+      Admin.create({
+        userId: amena.id
       })
     ])
     console.log('Seed successfully ran!');

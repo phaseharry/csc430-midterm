@@ -54,7 +54,10 @@ function ClassSearch(props){
     {
         searchActive ?
         <>
-        <Button>
+        <Button onClick={() => {
+            setCourses(null);
+            setSearchActive(false);
+        }}>
             Back
         </Button>
         <div>Search Is Active</div>
