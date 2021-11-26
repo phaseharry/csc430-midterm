@@ -83,6 +83,9 @@ function ClassSearch(props){
                 }
                 </Pane>)
             })}
+            {courses && courses.length === 0 && <Pane>
+                <h4>No Courses found</h4>
+            </Pane>}
         </Pane>
         </>:
        <>

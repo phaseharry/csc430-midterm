@@ -1,7 +1,7 @@
 const Router = require('express').Router();
-const { Op } = require("sequelize");
 const Course = require('../../db/models/Course');
 const Section = require('../../db/models/Section');
+const SectionToStudent = require('../../db/models/SectionToStudent');
 const Subject = require('../../db/models/Subject');
 const authenticateToken = require('../middleware/authenticateToken');
 
@@ -69,7 +69,7 @@ Router.post('/:subjectId/courses/:courseId', authenticateToken, async (req, res,
 })
 
 /**
- * @route GET api/courses/:courseId/sections
+ * @route GET api/subject/:subjectId/courses/:courseId/sections
  * @description gets all sections for a specific course
  * @access Students, Professors, Advisors
  */
@@ -85,15 +85,6 @@ Router.get('/:subjectId/courses/:courseId/sections', authenticateToken, async (r
   } catch (e) {
     next(e);
   }
-})
-
-/**
- * @route PUT api/courses/:courseId/sections/:sectionId
- * @description updates to a section
- * @access Students, Professors, Advisors
- */
-Router.put('/:courseId/sections/:sectionId', authenticateToken, (req, res, next) => {
-  const { courseId, sectionId } = req.params;
 })
 
 module.exports = Router;
