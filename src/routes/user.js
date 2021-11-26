@@ -4,8 +4,11 @@ const Router = require('express').Router();
 const User = require('../../db/models/User');
 const Student = require('../../db/models/Student');
 const Professor = require('../../db/models/Professor');
+const Course = require('../../db/models/Course');
+const SectionToStudent = require('../../db/models/SectionToStudent');
 const Admin = require('../../db/models/Admin');
 const authenticateToken = require('../middleware/authenticateToken');
+const Section = require('../../db/models/Section');
 
 /**
  * @route POST api/user/auth/login
@@ -78,6 +81,29 @@ Router.get('/info', authenticateToken, async (req, res, next) => {
   }
   delete resUserObj.password;
   res.json(resUserObj).status(200);
+})
+
+/**
+ * @route POST api/user/course-registered
+ * @description Gets a students' current registered courses
+ * @access Students,
+ */
+Router.get('/course-registered', authenticateToken, async (req, res, next) => {
+  const user = req.user;
+  const sectionToStudent = await SectionToStudent.findAll({
+    where: {
+      studentId: user.id
+    }
+  });
+  const coursesAndSections = await Promise.all(sectionToStudent.map(async (s) => {
+    const course = await Course.findByPk(s.courseId);
+    const section = await Section.findByPk(s.sectionId);
+    return {
+      section,
+      course
+    }
+  }))
+  res.status(200).json(coursesAndSections);
 })
 
 module.exports = Router;

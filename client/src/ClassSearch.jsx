@@ -52,8 +52,12 @@ function ClassSearch(props){
     return (
     <>
         <h2>Class Search</h2>
-    {
-        searchActive ?
+        <Pane marginBottom="0.5rem">
+            <Link to="/student">
+                <Button>Home</Button>
+            </Link>    
+        </Pane>
+        { searchActive ?
         <>
         <Button onClick={() => {
             setCourses(null);
@@ -83,6 +87,9 @@ function ClassSearch(props){
                 }
                 </Pane>)
             })}
+            {courses && courses.length === 0 && <Pane>
+                <h4>No Courses found</h4>
+            </Pane>}
         </Pane>
         </>:
        <>
