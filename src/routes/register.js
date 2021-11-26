@@ -9,10 +9,8 @@ const authenticateToken = require('../middleware/authenticateToken');
  * @access Students, Professors, Advisors
  */
 Router.post('/courses/:courseId/sections/:sectionId', authenticateToken, async (req, res, next) => {
-  const { sectionId } = req.params;
+  const { sectionId, courseId } = req.params;
   const { studentId } = req.body;
-  console.log('calling this')
-  console.log(studentId);
   // check if section has slot 
   const desiredSection = await Section.findByPk(sectionId);
   if (!desiredSection) {
@@ -30,7 +28,7 @@ Router.post('/courses/:courseId/sections/:sectionId', authenticateToken, async (
   const alreadyExists = await SectionToStudent.findOne({
     where: {
       studentId,
-      sectionId: desiredSection.id
+      courseId,
     }
   })
   if (alreadyExists) {
@@ -42,7 +40,8 @@ Router.post('/courses/:courseId/sections/:sectionId', authenticateToken, async (
   desiredSection.availableSeats -= 1;
   const sectionToStudent = await SectionToStudent.create({
     studentId,
-    sectionId: desiredSection.id
+    sectionId: desiredSection.id,
+    courseId
   })
   await desiredSection.save()
   res.status(201).send(sectionToStudent);

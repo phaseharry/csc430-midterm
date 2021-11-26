@@ -49,7 +49,7 @@ const SectionSignup = (props) => {
         availableSeats: selectedSection.availableSeats - 1
       })
       toaster.success('Class registration successful!');
-      navigate('/student/course');
+      navigate('/student/');
     } catch (e) {
       console.error(e);
       toaster.danger('Registration was not successful!')

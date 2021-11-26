@@ -1,7 +1,6 @@
 const Router = require('express').Router();
 const Course = require('../../db/models/Course');
 const Section = require('../../db/models/Section');
-const SectionToStudent = require('../../db/models/SectionToStudent');
 const Subject = require('../../db/models/Subject');
 const authenticateToken = require('../middleware/authenticateToken');
 

@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const conn = require('../connection');
 const User = require('./User');
 const Section = require('./Section');
+const Course = require('./Course');
 
 const SectionToStudent = conn.define('SectionToStudent', {
   id: {
@@ -27,6 +28,15 @@ const SectionToStudent = conn.define('SectionToStudent', {
       deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
     }
   },
+  courseId: {
+    type: Sequelize.UUID,
+    allowNull: false,
+    references: {
+      model: Course,
+      key: 'id',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
+    }
+  }
 });
 
 module.exports = SectionToStudent;

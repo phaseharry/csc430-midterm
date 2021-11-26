@@ -4,9 +4,11 @@ import ClassSearch from './ClassSearch';
 import Login from './Login';
 import AdminView from './AdminView';
 import ProfessorView  from './ProfessorView';
+import StudentView from './StudentView';
 import { AuthContext } from './contexts/AuthProvider';
 import './App.css';
 import SectionSignup from './SectionSignup';
+import MyCourses from './MyCourses';
 
 function App() {
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ function App() {
   useEffect(() => {
     if(authenticated && userInfo && !ranDefaultNav) {
       if(userInfo.role === 'student'){
-        navigate('/student/course');
+        navigate('/student/');
       } else if(userInfo.role === 'professor'){
         navigate('/prof');
       } else if(userInfo.role === 'admin'){
@@ -45,8 +47,10 @@ function App() {
           <Route path="/admin" element={<AdminView />} />
           <Route path="/login" element={<Login />}/>
           <Route path="student">
-            <Route path="course" element={<ClassSearch />} />
-            <Route path="course/:courseId/section/:sectionId" element={<SectionSignup />} />
+            <Route path="" element={<StudentView />}/>
+            <Route path="course-search" element={<ClassSearch />} />
+            <Route path="my-courses" element={<MyCourses />} />
+            <Route path="course-search/:courseId/section/:sectionId" element={<SectionSignup />} />
           </Route>
         </Routes>
       </header>
